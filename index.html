@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <title>Index !!!</title>
+</head>
+
+<body>
+    <div id="messages"></div>
+    <div>
+        <input id="input-message" type="text" />
+        <button onclick="sendMessage()">send</button>
+    </div>
+    <script>
+        let socket;
+
+        const sendMessage = () => {
+            const message = document.getElementById("input-message").value;
+            socket.send(message);
+            document.getElementById("input-message").value = "";
+        };
+
+        const receiveMessage = ({ data }) => {
+            const messagesDom = document.getElementById("messages");
+            const messageDom = document.createElement("p");
+            const content = document.createTextNode(data);
+            messageDom.appendChild(content);
+            messagesDom.appendChild(messageDom);
+        }
+
+        window.onload = () => {
+            socket = new WebSocket("ws://localhost:3000/chat");
+            socket.addEventListener("message", receiveMessage);
+        }
+    </script>
+</body>
+
+</html>
